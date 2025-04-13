@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CodeQuest: JavaScript Missions</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <h1>Select Your Mission</h1>
+  <div id="missionList" class="mission-grid"></div>
+
+  <script src="missions.js"></script>
+  <script>
+    const container = document.getElementById('missionList');
+    missions.forEach(m => {
+      const card = document.createElement('div');
+      card.className = 'mission-card';
+      card.innerHTML = `
+        <h3>${m.title}</h3>
+        <p>${m.description}</p>
+        <p><strong>XP:</strong> ${m.xpReward} | <strong>Coins:</strong> ${m.coinReward}</p>
+        <button onclick="startMission('${m.id}')">Start</button>
+      `;
+      container.appendChild(card);
+    });
+    function startMission(id) {
+      localStorage.setItem("activeMission", id);
+      window.location.href = "mission.html";
+    }
+  </script>
+</body>
+</html>
