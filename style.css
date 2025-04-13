@@ -1,0 +1,36 @@
+.mission-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.mission-card {
+  background: #fff;
+  border: 1px solid #ccc;
+  padding: 15px;
+  width: 300px;
+  border-radius: 6px;
+}
+
+.client-box {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+  background: #fff8e1;
+  padding: 15px;
+  border-radius: 8px;
+  border: 2px solid #fbc02d;
+}
+
+.client-box img {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  margin-right: 15px;
+}
+
+#clientDialogue {
+  font-size: 1.1em;
+  font-style: italic;
+  color: #333;
+}
