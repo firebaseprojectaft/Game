@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Mission</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <h1 id="missionTitle">Mission</h1>
+
+  <div class="client-box">
+    <img id="clientAvatar" src="avatars/baker.png" alt="Client Avatar">
+    <div id="clientDialogue">"Hey coder! I need your help!"</div>
+  </div>
+
+  <div id="instructions"></div>
+
+  <textarea id="code" spellcheck="false"></textarea>
+  <button id="runCode">Run Code</button>
+  <div id="feedback"></div>
+  <iframe id="previewFrame"></iframe>
+
+  <audio id="successSound" src="sounds/success.mp3"></audio>
+  <audio id="errorSound" src="sounds/error.mp3"></audio>
+
+  <script src="missions.js"></script>
+  <script>
+    const missionId = localStorage.getItem("activeMission");
+    const mission = missions.find(m => m.id === missionId);
+
+    document.getElementById("missionTitle").textContent = mission.title;
+    document.getElementById("instructions").textContent = mission.description;
+    document.getElementById("clientAvatar").src = `avatars/${mission.id}.png`;
+
+    const runBtn = document.getElementById("runCode");
+    const codeInput = document.getElementById("code");
+    const frame = document.getElementById("previewFrame");
+    const feedback = document.getElementById("feedback");
+    const clientDialogue = document.getElementById("clientDialogue");
+
+    const successSound = document.getElementById("successSound");
+    const errorSound = document.getElementById("errorSound");
+
+    runBtn.onclick = () => {
+      const userCode = codeInput.value;
+      const html = \`
+        <!DOCTYPE html>
+        <html><body>
+          \${mission.html}
+          <script>\${userCode}</script>
+        </body></html>
+      \`;
+
+      const doc = frame.contentWindow.document;
+      doc.open();
+      doc.write(html);
+      doc.close();
+
+      setTimeout(() => {
+        try {
+          const result = eval(mission.jsCheck);
+          if (result) {
+            feedback.textContent = "Success! XP awarded.";
+            feedback.style.color = "green";
+            successSound.play();
+            clientDialogue.textContent = "Great work, you're amazing!";
+            document.querySelector('.client-box').classList.add('success');
+            setTimeout(() => {
+              document.querySelector('.client-box').classList.remove('success');
+            }, 600);
+          } else {
+            feedback.textContent = "Not quite right...";
+            feedback.style.color = "red";
+            errorSound.play();
+            clientDialogue.textContent = "Hmm… try again, please!";
+          }
+        } catch (e) {
+          feedback.textContent = "Error in code.";
+          feedback.style.color = "red";
+          errorSound.play();
+          clientDialogue.textContent = "That didn’t go well. Try again!";
+        }
+      }, 500);
+    };
+  </script>
+</body>
+</html>
